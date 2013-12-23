@@ -20,14 +20,14 @@ if (!window.jQuery) {
 // End jQuery Check
 
 (function($) {
-    $(document).ready(function() { 
+    $(document).ready(function() {
         // Start Helper Functions
         function getFormUrl() {
             var hostUrl = $('#pinry-bookmarklet').attr('src').split('/')[2];
             var formUrl = '/pins/pin-form/?pin-image-url=';
             return 'http://'+hostUrl+formUrl;
         }
-    
+
         function normalizeImageUrl(imageUrl) {
             var protocol = imageUrl.split(':')[0];
             if (protocol != 'http' && protocol != 'https') {
@@ -37,8 +37,8 @@ if (!window.jQuery) {
             return imageUrl;
         }
         // End Helper Functions
-    
-    
+
+
         // Start View Functions
         function pageView() {
             var pinryImages = document.createElement('div');
@@ -74,7 +74,7 @@ if (!window.jQuery) {
             $('#pinry-bar').html('Pinry Bookmarklet');
             $(window).scrollTop(0);
         }
-    
+
         function imageView(imageUrl) {
             // Requires that pageView has been created already
             imageUrl = normalizeImageUrl(imageUrl);
@@ -98,8 +98,8 @@ if (!window.jQuery) {
             return $('#pinry-images').append(image);
         }
         // End View Functions
-    
-    
+
+
         // Start Active Functions
         function addAllImagesToPageView() {
             var images = $('body').find('img');
@@ -110,8 +110,8 @@ if (!window.jQuery) {
             return images;
         }
         // End Active Functions
-    
-    
+
+
         // Start Init
         pageView(); // Build page before we insert images
         addAllImagesToPageView(); // Add all images on page to our new pageView
