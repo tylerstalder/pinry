@@ -49,7 +49,7 @@
     pinryImages.style.top = '0';
     pinryImages.style.left = '0';
     pinryImages.style.right = '0';
-    pinryImages.style.height = document.body.clientHeight;
+    pinryImages.style.height = document.body.clientHeight + 'px';
     pinryImages.style.textAlign = 'center';
     pinryImages.style.width = '100%';
 
