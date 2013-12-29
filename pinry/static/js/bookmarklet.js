@@ -1,3 +1,5 @@
+/*global document, clearInterval */
+
 /**
  * Bookmarklet for Pinry
  * Descrip: This is trying to be as standalone a script as possible hence
@@ -9,112 +11,110 @@
  * Require: None (dynamically loads jQuery if needed)
  */
 
+(function() {
+  var container = document.createElement('div');
 
-// Start jQuery Check
-if (!window.jQuery) {
-    var body = document.getElementsByTagName('body')[0];
-    var script = document.createElement('script');
-    script.src = '//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js';
-    body.appendChild(script);
-}
-// End jQuery Check
+  // Start Helper Functions
+  function getFormUrl() {
+    var hostUrl = document.getElementById('pinry-bookmarklet').src.split('/')[2];
+    var formUrl = '/pins/pin-form/?pin-image-url=';
+    return 'http://'+hostUrl+formUrl;
+  }
 
-(function($) {
-    $(document).ready(function() {
-        // Start Helper Functions
-        function getFormUrl() {
-            var hostUrl = $('#pinry-bookmarklet').attr('src').split('/')[2];
-            var formUrl = '/pins/pin-form/?pin-image-url=';
-            return 'http://'+hostUrl+formUrl;
-        }
-
-        function normalizeImageUrl(imageUrl) {
-            var protocol = imageUrl.split(':')[0];
-            if (protocol != 'http' && protocol != 'https') {
-                if (imageUrl[1] != '/')
-                    imageUrl = 'http://'+window.location.host+imageUrl;
-            }
-            return imageUrl;
-        }
-        // End Helper Functions
+  function normalizeImageUrl(imageUrl) {
+    var protocol = imageUrl.split(':')[0];
+    if (protocol != 'http' && protocol != 'https') {
+      if (imageUrl[1] != '/')
+        imageUrl = 'http://'+window.location.host+imageUrl;
+    }
+    return imageUrl;
+  }
+  // End Helper Functions
 
 
-        // Start View Functions
-        function pageView() {
-            var pinryImages = document.createElement('div');
-            pinryImages.id = 'pinry-images';
-            $(pinryImages).css({
-                'position': 'absolute',
-                'z-index': '9001',
-                'background': 'rgba(0, 0, 0, 0.7)',
-                'padding-top': '70px',
-                'top': '0',
-                'left': '0',
-                'right': '0',
-                'height': $(document).height(),
-                'text-align': 'center',
-                'width': '100%'
-            });
-            var pinryBar = document.createElement('div');
-            pinryBar.id = 'pinry-bar';
-            $(pinryBar).css({
-                'background': 'black',
-                'padding': '15px',
-                'position': 'absolute',
-                'z-index': '9002',
-                'width': '100%',
-                'top': 0,
-                'border-bottom': '1px solid #555',
-                'color': 'white',
-                'text-align': 'center',
-                'font-size': '22px'
-            });
-            $('body').append(pinryImages);
-            $('#pinry-images').append(pinryBar);
-            $('#pinry-bar').html('Pinry Bookmarklet');
-            $(window).scrollTop(0);
-        }
+  // Start View Functions
+  function pageView() {
+    var pinryImages = container;
+    pinryImages.id = 'pinry-images';
 
-        function imageView(imageUrl) {
-            // Requires that pageView has been created already
-            imageUrl = normalizeImageUrl(imageUrl);
-            var image = document.createElement('div');
-            $(image).css({
-                'background-image': 'url('+imageUrl+')',
-                'background-position': 'center center',
-                'background-repeat': 'no-repeat',
-                'display': 'inline-block',
-                'width': '200px',
-                'height': '200px',
-                'margin': '15px',
-                'cursor': 'pointer',
-                'border': '1px solid #555'
-            });
-            $(image).click(function() {
-                var popUrl = getFormUrl()+imageUrl;
-                window.open(popUrl);
-                $('#pinry-images').remove();
-            });
-            return $('#pinry-images').append(image);
-        }
-        // End View Functions
+    pinryImages.style.position = 'absolute';
+    pinryImages.style.zindex = '9001';
+    pinryImages.style.background = 'rgba(0, 0, 0, 0.7)';
+    pinryImages.style.paddingTop = '70px';
+    pinryImages.style.top = '0';
+    pinryImages.style.left = '0';
+    pinryImages.style.right = '0';
+    pinryImages.style.height = document.body.clientHeight;
+    pinryImages.style.textAlign = 'center';
+    pinryImages.style.width = '100%';
 
+    var pinryBar = document.createElement('div');
+    pinryBar.id = 'pinry-bar';
+    pinryBar.innerHTML = 'Pinry Bookmarklet';
 
-        // Start Active Functions
-        function addAllImagesToPageView() {
-            var images = $('body').find('img');
-            images.each(function() {
-                if ($(this).width() > 200 && $(this).height() > 200)
-                    imageView($(this).attr('src'));
-            });
-            return images;
-        }
-        // End Active Functions
+    pinryBar.style.background = 'black';
+    pinryBar.style.padding = '15px';
+    pinryBar.style.position = 'absolute';
+    pinryBar.style.zindex = '9002';
+    pinryBar.style.width = '100%';
+    pinryBar.style.top = '0';
+    pinryBar.style.borderBottom = '1px solid #555';
+    pinryBar.style.color = 'white';
+    pinryBar.style.textAlign = 'center';
+    pinryBar.style.fontSize = '22px';
+
+    pinryImages.appendChild(pinryBar);
+    document.body.appendChild(pinryImages);
+    window.scrollTop = 0;
+  }
+
+  function imageView(imageUrl) {
+    // Requires that pageView has been created already
+    imageUrl = normalizeImageUrl(imageUrl);
+    var image = document.createElement('div');
+
+    image.style.backgroundImage = 'url(' + imageUrl + ')';
+    image.style.backgroundPosition = 'center center';
+    image.style.backgroundRepeat = 'no-repeat';
+    image.style.display = 'inline-block';
+    image.style.margin = '15px';
+    image.style.cursor = 'pointer';
+    image.style.border = '1px solid #555';
+    image.style.width = '200px';
+    image.style.height = '200px';
+
+    image.addEventListener('click', function() {
+      var popUrl = getFormUrl()+imageUrl;
+      window.open(popUrl);
+      document.body.removeChild(container);
+    }, false);
+
+    container.appendChild(image);
+  }
+  // End View Functions
 
 
-        // Start Init
-        pageView(); // Build page before we insert images
-        addAllImagesToPageView(); // Add all images on page to our new pageView
-        // End Init
-    });
-})(jQuery);
+  // Start Active Functions
+  function addAllImagesToPageView() {
+    var images = document.getElementsByTagName('img');
+    for (var i = 0; i < images.length; i++) {
+      var el = images[i];
+      var style = window.getComputedStyle(el, null);
+      var width = style.getPropertyValue("height").replace('px','');
+      var height = style.getPropertyValue("height").replace('px','');
+
+      if (width > 200 && height > 200) {
+        imageView(el.src);
+      }
+    }
+    return images;
+  }
+  // End Active Functions
+
+
+  // Start Init
+  pageView(); // Build page before we insert images
+  addAllImagesToPageView(); // Add all images on page to our new pageView
+  // End Init
+
+})();
