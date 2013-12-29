@@ -43,7 +43,7 @@
     pinryImages.id = 'pinry-images';
 
     pinryImages.style.position = 'absolute';
-    pinryImages.style.zindex = '9001';
+    pinryImages.style.zIndex = '9001';
     pinryImages.style.background = 'rgba(0, 0, 0, 0.7)';
     pinryImages.style.paddingTop = '70px';
     pinryImages.style.top = '0';
@@ -60,7 +60,7 @@
     pinryBar.style.background = 'black';
     pinryBar.style.padding = '15px';
     pinryBar.style.position = 'absolute';
-    pinryBar.style.zindex = '9002';
+    pinryBar.style.zIndex = '9002';
     pinryBar.style.width = '100%';
     pinryBar.style.top = '0';
     pinryBar.style.borderBottom = '1px solid #555';
