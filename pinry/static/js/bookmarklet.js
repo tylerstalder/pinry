@@ -76,6 +76,7 @@
     image.style.backgroundImage = 'url(' + imageUrl + ')';
     image.style.backgroundPosition = 'center center';
     image.style.backgroundRepeat = 'no-repeat';
+    image.style.backgroundSize = '200px 200px';
     image.style.display = 'inline-block';
     image.style.margin = '15px';
     image.style.cursor = 'pointer';
