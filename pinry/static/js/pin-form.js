@@ -198,6 +198,10 @@ $(window).load(function() {
 
     if (getUrlParameter('pin-image-url')) {
         createPinForm();
+
+        if (getUrlParameter('pin-source-url')) {
+          $('#pin-form-description').val(getUrlParameter('pin-source-url'));
+        }
     }
     // End Init
 });

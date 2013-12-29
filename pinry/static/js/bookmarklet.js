@@ -21,6 +21,11 @@
     return 'http://'+hostUrl+formUrl;
   }
 
+  function getSourceUrl() {
+    var sourceUrl = window.location.href;
+    return '&pin-source-url=' + sourceUrl;
+  }
+
   function normalizeImageUrl(imageUrl) {
     var protocol = imageUrl.split(':')[0];
     if (protocol != 'http' && protocol != 'https') {
@@ -85,7 +90,7 @@
     image.style.height = '200px';
 
     image.addEventListener('click', function() {
-      var popUrl = getFormUrl()+imageUrl;
+      var popUrl = getFormUrl()+imageUrl+getSourceUrl();
       window.open(popUrl);
       document.body.removeChild(container);
     }, false);
